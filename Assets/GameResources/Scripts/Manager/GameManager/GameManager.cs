@@ -1,9 +1,11 @@
+using GameController.Audio;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] SEManager seManager;
 
     //--------------------------------------------------
 
@@ -14,6 +16,8 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.Space)) {
+            seManager.PlayAudio("ButtonClick");
+        }
     }
 }
