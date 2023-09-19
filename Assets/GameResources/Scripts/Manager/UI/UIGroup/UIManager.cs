@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GameController.UI {
-    public class UIManager : MonoBehaviour {
+namespace GameController.UI
+{
+	public class UIManager : MonoBehaviour
+	{
 
 		//--------------------------------------------------
 		// inspector List
@@ -22,12 +24,12 @@ namespace GameController.UI {
 		//--------------------------------------------------
 		private void Awake()
 		{
-			ResetUIHistory();			// 履歴リセット
+			ResetUIHistory();           // 履歴リセット
 
 			foreach (var uiGroup in _uiGroupList) {
-				uiGroup.Hide();					// 登録されたUIを、全て非表示にする
-				uiGroup.Initialize();			
-				uiGroupList.Add(uiGroup);		// インスペクターのリストをstaticリストに登録
+				uiGroup.Hide();                 // 登録されたUIを、全て非表示にする
+				uiGroup.Initialize();
+				uiGroupList.Add(uiGroup);       // インスペクターのリストをstaticリストに登録
 			}
 
 			// 初期UIGroupを表示
@@ -42,11 +44,7 @@ namespace GameController.UI {
 		}
 
 		//--------------------------------------------------
-		/// <summary>
-		/// <typeparamref name="T"/>型のUIGroupを取得する
-		/// </summary>
-		/// <typeparam name="T">UIGroupの型</typeparam>
-		/// <returns><typeparamref name="T"/>型のUIGroupのインスタンス</returns>
+		/// <summary> <typeparamref name="T"/>型のUIGroupを取得する </summary>
 		public static T GetUIGroup<T>() where T : UIGroup
 		{
 			// T型のUIGroupを検索する
@@ -60,10 +58,7 @@ namespace GameController.UI {
 		}
 
 		//--------------------------------------------------
-		/// <summary>
-		/// UIGroupを表示する
-		/// </summary>
-		/// <typeparam name="T">UIGroupの型</typeparam>
+		/// <summary> UIGroupを表示する </summary>
 		/// <param name="remember">履歴に残すか</param>
 		public static void ShowUIGroup<T>(bool remember = true) where T : UIGroup
 		{
@@ -87,10 +82,7 @@ namespace GameController.UI {
 			}
 		}
 
-		/// <summary>
-		/// UIGroupを表示する
-		/// </summary>
-		/// <param name="uiGroup">表示するUIGroupのインスタンス</param>
+		/// <summary> UIGroupを表示する </summary>
 		public static void ShowUIGroup(UIGroup uiGroup)
 		{
 			if (currentUIGroup) {
@@ -106,10 +98,7 @@ namespace GameController.UI {
 			ShowCommon();
 		}
 
-		/// <summary>
-		/// UIGroupを表示する
-		/// </summary>
-		/// <param name="uiGroup">表示するUIGroupのインスタンス</param>
+		/// <summary> UIGroupを表示する </summary>
 		/// <param name="remember">履歴に残すか</param>
 		public static void ShowUIGroup(UIGroup uiGroup, bool remember = true)
 		{
@@ -127,9 +116,7 @@ namespace GameController.UI {
 			ShowCommon();
 		}
 
-		/// <summary>
-		/// 一つ前のUIGroupを表示する
-		/// </summary>
+		/// <summary> 一つ前のUIGroupを表示する </summary>
 		public static void ShowLastUIGroup()
 		{
 			if (histroy.Count != 0) {
@@ -138,20 +125,27 @@ namespace GameController.UI {
 		}
 
 		//--------------------------------------------------
-		/// <summary>
-		/// 全てのUIを非表示にする
-		/// </summary>
+
+		/// <summary> UIGroupを非表示にする </summary>
+		public void HideUIGroup(UIGroup uigroup)
+		{
+			uigroup.Hide();
+
+			currentUIGroup = null;
+		}
+
+		//--------------------------------------------------
+		/// <summary> 全てのUIを非表示にする </summary>
 		public static void HideAllUIGroups()
 		{
+			currentUIGroup = null;      // 現在のUIをリセット
+
 			foreach (var uiGroup in uiGroupList) {
 				uiGroup.Hide();
-				currentUIGroup = null;      // 現在のUIをリセット
 			}
 		}
 
-		/// <summary>
-		/// 履歴をリセットする
-		/// </summary>
+		/// <summary> 履歴をリセットする </summary>
 		public static void ResetUIHistory()
 		{
 			histroy.Clear();

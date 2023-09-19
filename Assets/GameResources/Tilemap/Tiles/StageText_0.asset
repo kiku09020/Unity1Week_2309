@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: StageText_0
   m_EditorClassIdentifier: 
   m_Sprite: {fileID: -2131491128, guid: 6d91102515a677c42a6bf7b47f24f9e5, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.49056602, g: 0.49056602, b: 0.49056602, a: 1}
   m_Transform:
     e00: 1
     e01: 0
