@@ -21,6 +21,11 @@ namespace Game.Player.State
 			if (!groundHitChecker.IsHit) {
 				StateTransition("Falling");
 			}
+
+			// ƒNƒŠƒAó‘Ô‚É‘JˆÚ
+			if (GameManager.IsClear) {
+				StateTransition("Clear");
+			}
 		}
 
 		public override void OnUpdate()

@@ -11,11 +11,20 @@ namespace Game.Stage
 		[SerializeField] Tilemap tilemap;
 		[SerializeField] TileBase enterTile;
 
+		[SerializeField] StageClearChecker stageClearChecker;
+
 		[SerializeField] Vector3Int tilemapSize = new Vector3Int(18, 10);
 
 		BoundsInt downRowBounds;
 
 		//--------------------------------------------------
+
+		private void Awake()
+		{
+			tilemap.origin = -tilemapSize / 2;
+			tilemap.size = new Vector3Int(tilemapSize.x, tilemapSize.y, 1);
+			tilemap.ResizeBounds();
+		}
 
 		public void OnChangedStage(Transform playerTransform)
 		{
@@ -26,6 +35,9 @@ namespace Game.Stage
 			tilemap.SetTile(playerTilePos, enterTile);
 
 			SetTiles(playerTilePos);
+
+			// クリア判定
+			stageClearChecker.CheckTiles();
 		}
 
 		/// <summary> 改行対象タイルのBoundsを取得 </summary>

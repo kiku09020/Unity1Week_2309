@@ -13,8 +13,10 @@ namespace Game.Player
 
 		[Header("Components")]
 		[SerializeField] PlayerStateMachine stateMachine;
+		[SerializeField] SpriteRenderer rend;
 
 		public PlayerData Data => data;
+		public SpriteRenderer SpriteRenderer => rend;
 
 		//--------------------------------------------------
 
@@ -26,8 +28,6 @@ namespace Game.Player
 		private void FixedUpdate()
 		{
 			stateMachine.OnFixedUpdate();
-
-
 		}
 
 		private void Update()
