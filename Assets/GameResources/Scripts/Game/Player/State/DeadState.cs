@@ -7,6 +7,11 @@ namespace Game.Player.State
     public class DeadState : PlayerStateBase
     {
 
-        //--------------------------------------------------
-    }
+		//--------------------------------------------------
+
+		public override void OnEnter()
+		{
+			print("dead");
+		}
+	}
 }

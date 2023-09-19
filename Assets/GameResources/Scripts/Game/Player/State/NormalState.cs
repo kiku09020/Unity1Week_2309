@@ -9,6 +9,7 @@ namespace Game.Player.State
 		[SerializeField] PlayerMover mover;
 
 		[SerializeField] PlayerHitCheckerBase groundHitChecker;
+		[SerializeField] PlayerEnterAbility ability;
 
 		//--------------------------------------------------
 
@@ -20,6 +21,11 @@ namespace Game.Player.State
 			if (!groundHitChecker.IsHit) {
 				StateTransition("Falling");
 			}
+		}
+
+		public override void OnUpdate()
+		{
+			ability.PlayerInput();
 		}
 	}
 }

@@ -9,6 +9,8 @@ namespace Game.Player.State
 		[SerializeField] PlayerMover mover;
 		[SerializeField] PlayerHitCheckerBase groundHitChecker;
 
+		[SerializeField] PlayerHitCheckerBase deadHitChecker;
+
 		//--------------------------------------------------
 
 		public override void OnFixedUpdate()
@@ -18,6 +20,11 @@ namespace Game.Player.State
 			// ’…’n‚µ‚½‚ç’Êíó‘Ô‚É‘JˆÚ
 			if(groundHitChecker.IsHit) {
 				StateTransition("Normal");
+			}
+
+			// €–S”»’è
+			if (deadHitChecker.IsHit) {
+				StateTransition("Dead");
 			}
 		}
 

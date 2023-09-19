@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movement:
     speed: 3
-    fallSpeed: 3.2666667
+    fallSpeed: 4.9000006
