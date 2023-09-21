@@ -32,10 +32,11 @@ namespace Game.Stage
 
 		void SetSelectionTile(Vector3Int playerPos)
 		{
-			var bounds = StageManager.GetEnteredTilesBoound(playerPos);
+			var bounds = StageManager.GetEnteredTilesBound(playerPos);
 
 			// É^ÉCÉãÇê›íu
-			var tiles = Enumerable.Repeat(selectTile, bounds.size.x * bounds.size.y).ToArray();
+			var length = Mathf.Abs(bounds.size.x * bounds.size.y);
+			var tiles = Enumerable.Repeat(selectTile, length).ToArray();
 
 			tilemap.ClearAllTiles();
 			tilemap.SetTilesBlock(bounds, tiles);

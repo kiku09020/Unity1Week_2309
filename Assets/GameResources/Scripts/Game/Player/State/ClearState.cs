@@ -8,6 +8,8 @@ namespace Game.Player
 {
 	public class ClearState : PlayerStateBase
 	{
+		[SerializeField] Animator animator;
+
 		[Header("Animation")]
 		[SerializeField] float duration = 1;
 		[SerializeField] Vector2 animScale = Vector2.one;
@@ -19,7 +21,7 @@ namespace Game.Player
 
 		public override void OnEnter()
 		{
-			print("Clear");
+			animator.SetBool("isCleared", true);
 
 			Animation();
 		}

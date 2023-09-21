@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: PlayerData
   m_EditorClassIdentifier: 
   movement:
-    speed: 3
-    fallSpeed: 4.9000006
+    speed: 2
+    fallSpeed: 9.800002

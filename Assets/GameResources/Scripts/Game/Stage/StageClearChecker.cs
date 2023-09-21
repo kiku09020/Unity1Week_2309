@@ -11,42 +11,28 @@ namespace Game.Stage
 	{
 		const int clearTileCount = 6;
 
-		[SerializeField] Tilemap tilemap;
 		[SerializeField] TileBase[] targetTiles = new TileBase[clearTileCount];
+
+		[SerializeField] StageManager stageManager;
 
 		bool isContains;
 
 		public event System.Action OnClearEvent;
 
-		TileBase[,] stageTiles;
-
 		//--------------------------------------------------
 
-		private void Start()
+		void Start()
 		{
-			stageTiles = new TileBase[tilemap.size.x, tilemap.size.y];
-
-			SetStageTiles();
-		}
-
-		void SetStageTiles()
-		{
-			// 行ごとに探索指定
-			for (int y = 0; y < tilemap.size.y; y++) {
-				for (int x = 0; x < tilemap.size.x; x++) {
-					var cellPos = new Vector3Int(tilemap.cellBounds.x + x, tilemap.cellBounds.y + y, tilemap.cellBounds.z);
-					stageTiles[y, x] = tilemap.GetTile(cellPos);
-				}
-			}
+			stageManager.OnChangedEvent += CheckTiles;
 		}
 
 		public void CheckTiles()
 		{
-			SetStageTiles();
+			var stageTiles = stageManager.GetStageTilesArray();
 
 			// 列ごとに探索
-			for (int x = 0; x < tilemap.size.x; x++) {
-				for (int y = tilemap.size.y - 1; y >= 0; y--) {
+			for (int x = 0; x < stageManager.Tilemap.size.x; x++) {
+				for (int y = 0; y < stageManager.Tilemap.size.y; y++) {
 
 					var tile = stageTiles[y, x];
 
@@ -58,7 +44,7 @@ namespace Game.Stage
 
 						// 目標タイルと同じタイルだったら、次のタイルへ
 						for (int i = 0; i < targetTiles.Length; i++) {
-							if (stageTiles[y - i, x] != targetTiles[i]) {
+							if (stageTiles[y + i, x] != targetTiles[i]) {
 								isContains = false;
 								break;
 							}
