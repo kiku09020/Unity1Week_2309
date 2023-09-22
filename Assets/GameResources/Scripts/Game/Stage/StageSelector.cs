@@ -9,7 +9,6 @@ namespace Game.Stage
 	/// <summary> ステージの選択範囲 </summary>
 	public class StageSelector : MonoBehaviour
 	{
-		[SerializeField] Player.Player player;
 		[SerializeField] StageManager StageManager;
 		[SerializeField] Tilemap tilemap;
 		[SerializeField] TileBase selectTile;
@@ -18,28 +17,22 @@ namespace Game.Stage
 
 		//--------------------------------------------------
 
-		private void FixedUpdate()
+		public void SetSelectionTile(Vector3 playerPos)
 		{
-			var playerPos = tilemap.WorldToCell(player.transform.position);
+			var playerTilePos = tilemap.WorldToCell(playerPos);
 
+			if (playerTilePos != playerPrevTilePos) {
+				var bounds = StageManager.GetEnteredTilesBound(playerTilePos);
 
-			if (playerPos != playerPrevTilePos) {
-				SetSelectionTile(playerPos);
+				// タイルを設置
+				var length = Mathf.Abs(bounds.size.x * bounds.size.y);
+				var tiles = Enumerable.Repeat(selectTile, length).ToArray();
+
+				tilemap.ClearAllTiles();
+				tilemap.SetTilesBlock(bounds, tiles);
 			}
 
-			playerPrevTilePos = playerPos;
-		}
-
-		void SetSelectionTile(Vector3Int playerPos)
-		{
-			var bounds = StageManager.GetEnteredTilesBound(playerPos);
-
-			// タイルを設置
-			var length = Mathf.Abs(bounds.size.x * bounds.size.y);
-			var tiles = Enumerable.Repeat(selectTile, length).ToArray();
-
-			tilemap.ClearAllTiles();
-			tilemap.SetTilesBlock(bounds, tiles);
+			playerPrevTilePos = playerTilePos;
 		}
 	}
 }

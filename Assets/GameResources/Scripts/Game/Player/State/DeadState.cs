@@ -12,6 +12,10 @@ namespace Game.Player.State
 		public override void OnEnter()
 		{
 			print("dead");
+
+			player.WindowController.ShowGameOverWindow();
+
+			player.RunDeadAction();
 		}
 	}
 }

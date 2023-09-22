@@ -127,11 +127,20 @@ namespace GameController.UI
 		//--------------------------------------------------
 
 		/// <summary> UIGroup‚ð”ñ•\Ž¦‚É‚·‚é </summary>
-		public void HideUIGroup(UIGroup uigroup)
+		public static void HideUIGroup(UIGroup uigroup)
 		{
 			uigroup.Hide();
 
 			currentUIGroup = null;
+		}
+
+		public static void HideUIGroup<T>() where T : UIGroup
+		{
+			foreach (var uiGroup in uiGroupList) {
+				if (uiGroup is T) {
+					HideUIGroup(uiGroup);
+				}
+			}
 		}
 
 		//--------------------------------------------------

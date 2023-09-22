@@ -23,6 +23,8 @@ namespace Game.Player
 		{
 			animator.SetBool("isCleared", true);
 
+			player.WindowController.ShowGameClearWindow();
+
 			Animation();
 		}
 

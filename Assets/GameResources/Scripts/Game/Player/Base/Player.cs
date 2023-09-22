@@ -1,4 +1,7 @@
 using Game.Player.State;
+using GameController.Audio;
+using GameController.UI;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,10 +17,18 @@ namespace Game.Player
 		[Header("Components")]
 		[SerializeField] PlayerStateMachine stateMachine;
 		[SerializeField] SpriteRenderer rend;
+		[SerializeField] WindowController windowController;
+		[SerializeField] SEManager seManager;
 
 		public PlayerData Data => data;
 		public SpriteRenderer SpriteRenderer => rend;
+		public WindowController WindowController => windowController;
+		public SEManager SEManager => seManager;
 
+
+		public event Action OnDeadEvent;
+
+		public void RunDeadAction()=> OnDeadEvent?.Invoke();
 		//--------------------------------------------------
 
 		void Awake()

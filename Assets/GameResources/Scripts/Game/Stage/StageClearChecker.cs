@@ -34,6 +34,10 @@ namespace Game.Stage
 			for (int x = 0; x < stageManager.Tilemap.size.x; x++) {
 				for (int y = 0; y < stageManager.Tilemap.size.y; y++) {
 
+					if (stageManager.Tilemap.size.y < y + targetTiles.Length) {
+						break;
+					}
+
 					var tile = stageTiles[y, x];
 
 					// タイルを含んでいたら、そのタイルを始点とする

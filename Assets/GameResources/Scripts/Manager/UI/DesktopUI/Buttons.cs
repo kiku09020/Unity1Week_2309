@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace GameController.UI
 {
@@ -9,14 +10,24 @@ namespace GameController.UI
 
         //--------------------------------------------------
 
-        void Awake()
+        public void RetryButton()
         {
-
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
 
-        void Update()
+        public void QuitButton()
         {
+            SceneManager.LoadScene("DesktopScene");
+		}
 
+        public void StageTextFileButton(string sceneName)
+        {
+            SceneManager.LoadScene(sceneName);
+        }
+
+        public void NextButton()
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
     }
 }

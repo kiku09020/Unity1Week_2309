@@ -9,7 +9,7 @@ namespace Game.Player
 	{
 		[SerializeField] LayerMask hitLayerMask;
 
-		public bool IsHit { get; private set; }
+		public bool IsHit { get; protected set; }
 
 		public event Action<Collider2D> OnHitEvent;
 		public event Action<Collider2D> OnHitExitEvent;

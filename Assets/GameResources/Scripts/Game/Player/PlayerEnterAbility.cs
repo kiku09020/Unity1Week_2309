@@ -22,6 +22,8 @@ namespace Game.Player
 		{
 			if (Input.GetKeyDown(KeyCode.Return)) {
 				stageManager.OnChangedStage(player.transform);
+
+				player.SEManager.PlayAudio("enterSound");
 			}
 		}
 

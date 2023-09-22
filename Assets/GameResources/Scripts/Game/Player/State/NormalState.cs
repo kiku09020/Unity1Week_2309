@@ -1,3 +1,4 @@
+using Game.Stage;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,7 @@ namespace Game.Player.State
 	public class NormalState : PlayerStateBase
 	{
 		[SerializeField] PlayerMover mover;
+		[SerializeField] StageSelector selector;
 
 		[SerializeField] PlayerHitCheckerBase groundHitChecker;
 		[SerializeField] PlayerEnterAbility ability;
@@ -15,6 +17,7 @@ namespace Game.Player.State
 
 		public override void OnFixedUpdate()
 		{
+			selector.SetSelectionTile(player.transform.position);
 			mover.Move();
 
 			// ’n–Ê‚©‚ç—£‚ê‚½‚ç—‰ºó‘Ô‚É‘JˆÚ

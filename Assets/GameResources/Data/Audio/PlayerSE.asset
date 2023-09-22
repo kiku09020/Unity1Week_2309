@@ -10,12 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 992b23f2580503c4480b06c19d491c90, type: 3}
-  m_Name: UISEDataList
+  m_Name: PlayerSE
   m_EditorClassIdentifier: 
   dataList:
-  - name: ButtonClick
-    data: {fileID: 8300000, guid: 61fe78ad7abaabe4f8344a2bd14b9002, type: 3}
-  - name: windowsError
-    data: {fileID: 8300000, guid: 4c477bd21304344459f36e6c4f73a193, type: 3}
-  - name: tada
-    data: {fileID: 8300000, guid: e1ddb4df6ca31ae4c8e52b91e0548bfb, type: 3}
+  - name: enterSound
+    data: {fileID: 8300000, guid: de2f616bad14cc646879ba6ff4915881, type: 3}

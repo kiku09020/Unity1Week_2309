@@ -13,8 +13,6 @@ namespace Game.Stage
 
 		[SerializeField] Vector3Int tilemapSize = new Vector3Int(18, 10);
 
-		BoundsInt downRowBounds;
-
 		/// <summary> ステージ変化時のイベント </summary>
 		public event System.Action OnChangedEvent;
 
@@ -48,15 +46,6 @@ namespace Game.Stage
 			return stageTiles;
 		}
 
-		// タイル座標から配列のインデックスを取得
-		Vector3Int GetArrayIndexFromTilePos(Vector3Int tilePos)
-		{
-			int x = tilePos.x - tilemap.cellBounds.x;
-			int y = (tilemap.size.y - 1) + (tilemap.cellBounds.y - tilePos.y);
-
-			return new Vector3Int(x, y, tilePos.z);
-		}
-
 		//--------------------------------------------------
 		/// <summary> ステージ変化時の処理 </summary>
 		public void OnChangedStage(Transform playerTransform)
@@ -66,70 +55,85 @@ namespace Game.Stage
 
 			SetTiles(playerTilePos);
 
-
-			// エンタータイル設置
-			if (CheckEnterPos(playerTilePos) != playerTilePos) {
-				var pos = new Vector3Int(-tilemap.size.x / 2, playerTilePos.y - 1, playerTilePos.z);
-
-				// タイルを下にずらす
-				var tiles = GetEnteredDownRowTiles(playerTilePos);
-
-				var boundsPos = new Vector3Int(pos.x, pos.y - (pos.y - (tilemapSize.y / 2) + 1), 0);
-				var boundsSize = new Vector3Int(tilemapSize.x, (pos.y - (tilemapSize.y / 2)), 1);
-				var bounds = new BoundsInt(boundsPos, boundsSize);
-
-				tilemap.SetTilesBlock(bounds, tiles);
-
-				// 改行対象削除
-				var clearBoundsSize = new Vector3Int(tilemapSize.x, 1, 1);
-				var clearBounds = new BoundsInt(pos, clearBoundsSize);
-				tilemap.SetTilesBlock(clearBounds, new TileBase[clearBounds.size.x * clearBounds.size.y]);
-
-				// エンタータイル設置
-				tilemap.SetTile(pos, enterTile);
-			}
-
-
-			else {
-				tilemap.SetTile(playerTilePos, enterTile);
-			}
-
-
-
 			// クリア判定
 			OnChangedEvent?.Invoke();
 		}
 
+		// タイル配置
+		void SetTiles(Vector3Int playerTilePos)
+		{
+			// 既存の改行タイルの位置をチェック
+			var prevEnterTilePos = playerTilePos;
+			bool isEnterOfEnter = CheckExistingEnterPos(playerTilePos, ref prevEnterTilePos);
+
+			// 配置予定の改行タイルの位置を取得
+			var nextEnterTilePos = GetNextEnterPos(playerTilePos, isEnterOfEnter);
+
+			// 改行対象タイル + ずれ対象タイル
+			List<TileBase> replacedTiles = new List<TileBase>();
+
+			var enteredTilesBounds = GetEnteredTilesBound(playerTilePos, prevEnterTilePos, isEnterOfEnter);
+
+			
+			if (!isEnterOfEnter) {
+				var enteredTiles = tilemap.GetTilesBlock(enteredTilesBounds);
+				replacedTiles.AddRange(enteredTiles);
+			}
+
+			var offedTilesBouonds = GetOffedTIlesBounds(playerTilePos);
+			var offedTiles = GetOffedTiles(offedTilesBouonds);
+			replacedTiles.AddRange(offedTiles);
+
+			// タイルを設置	
+			SetReplacedTiles(nextEnterTilePos, replacedTiles.ToArray());
+
+			// 改行タイルを設置
+			SetEnterTile(enteredTilesBounds, nextEnterTilePos, isEnterOfEnter);
+		}
+
 		//--------------------------------------------------
-		// 改行タイルの位置をチェック
-		Vector3Int CheckEnterPos(Vector3Int playerTilePos)
+		// 既存の改行タイルの位置をチェック
+		bool CheckExistingEnterPos(Vector3Int playerTilePos, ref Vector3Int enterTilePos)
 		{
 			Vector3Int pos;
 
-			// プレイヤーから左端までのタイルにエンタータイルがあれば、
-			// そのタイルを始点として、左端までのタイルを改行対象とする
+			// プレイヤーの左タイルから、左端まで探索
+			// 改行タイルがあれば、タイル位置を返す
 			for (int x = playerTilePos.x - 1; x >= -tilemapSize.x / 2; x--) {
 				pos = new Vector3Int(x, playerTilePos.y, playerTilePos.z);
 				var tile = tilemap.GetTile(pos);
 
 				if (tile == enterTile) {
-					return pos;
+					enterTilePos = pos;
+					return true;
 				}
 			}
 
-			return playerTilePos;
+			return false;
 		}
 
-		/// <summary> 改行対象タイルのBoundsを取得 </summary>
+		/// <summary> 改行対象タイルの範囲を取得 </summary>
 		public BoundsInt GetEnteredTilesBound(Vector3Int playerTilePos)
 		{
-			var startTilePos = playerTilePos + Vector3Int.right;    // 改行開始タイル
-			var endTilePos = new Vector3Int(tilemapSize.x / 2, playerTilePos.y, playerTilePos.z);    // 改行終了タイル
+			var enterTilePos = playerTilePos;
+			var isEnterOfEnter = CheckExistingEnterPos(playerTilePos, ref enterTilePos);
 
-			var pos = CheckEnterPos(playerTilePos);
-			if (pos != playerTilePos) {
-				startTilePos = pos - Vector3Int.right;
-				endTilePos = pos + Vector3Int.up;
+			return GetEnteredTilesBound(playerTilePos, playerTilePos, isEnterOfEnter);
+		}
+
+		BoundsInt GetEnteredTilesBound(Vector3Int playerTilePos, Vector3Int enterTilePos, bool isEnterofEnter)
+		{
+			Vector3Int startTilePos = Vector3Int.zero;           // 改行開始タイル
+			Vector3Int endTilePos = Vector3Int.zero;            // 改行終了タイル
+
+			if (isEnterofEnter) {
+				startTilePos = new Vector3Int(tilemap.cellBounds.x, enterTilePos.y - 1, enterTilePos.z);
+				endTilePos = new Vector3Int(tilemap.cellBounds.max.x, enterTilePos.y - 1, 0);
+			}
+
+			else {
+				startTilePos = playerTilePos + Vector3Int.right;                                    // 改行開始タイル
+				endTilePos = new Vector3Int(tilemapSize.x / 2, playerTilePos.y, playerTilePos.z);   // 改行終了タイル
 			}
 
 			var boundsSize = new Vector3Int(endTilePos.x - startTilePos.x, 1, 1);
@@ -138,31 +142,34 @@ namespace Game.Stage
 			return bounds;
 		}
 
-		//--------------------------------------------------
-		// 改行対象のタイルを取得
-		TileBase[] GetEnteredTiles(Vector3Int playerTilePos)
+		// 配置予定の改行タイルの位置を取得
+		Vector3Int GetNextEnterPos(Vector3Int playerTilePos, bool isEnterOfEnter)
 		{
-			var bounds = GetEnteredTilesBound(playerTilePos);
-			var tiles = tilemap.GetTilesBlock(bounds);
+			// 改行の改行の場合、下の行の左端
+			if (isEnterOfEnter) {
+				return new Vector3Int(tilemap.cellBounds.x, playerTilePos.y - 1, playerTilePos.z);
+			}
 
-			tilemap.SetTilesBlock(bounds, new TileBase[bounds.size.x * bounds.size.y]);            // タイルを削除
-
-			return tiles;
+			// 改行の場合、プレイヤーのタイル位置
+			return playerTilePos;
 		}
 
-		// 改行対象のタイル以降のタイルを取得
-		TileBase[] GetEnteredDownRowTiles(Vector3Int playerTilePos)
+		//--------------------------------------------------
+		// ずれる対象のタイルの範囲を取得
+		BoundsInt GetOffedTIlesBounds(Vector3Int playerTilePos)
 		{
-			var startTilePos = -tilemapSize / 2;
+			var startTilePos = tilemap.cellBounds.position;
 
-			var boundsSize = new Vector3Int(tilemapSize.x, playerTilePos.y - (-tilemapSize.y / 2), 1);
+			var boundsPos = new Vector3Int(startTilePos.x, playerTilePos.y - 1);
+			var boundsSize = new Vector3Int(tilemapSize.x, playerTilePos.y - startTilePos.y, 1);
+			var bounds = new BoundsInt(boundsPos, boundsSize);
 
-			// 改行対象の並びBounds
-			var downRowBoundsPos = new Vector3Int(startTilePos.x, playerTilePos.y - 1);
-			var downRowBoundsSize = new Vector3Int(tilemapSize.x, boundsSize.y, 1);
-			var bounds = new BoundsInt(downRowBoundsPos, downRowBoundsSize);
+			return bounds;
+		}
 
-			// タイル取得
+		// ずれる対象のタイルを取得
+		TileBase[] GetOffedTiles(BoundsInt bounds)
+		{
 			var tiles = new TileBase[bounds.size.x * bounds.size.y];
 
 			for (int y = 0; y < bounds.size.y; y++) {
@@ -171,29 +178,51 @@ namespace Game.Stage
 				}
 			}
 
-			downRowBounds = bounds;
-			downRowBounds.position = new Vector3Int(bounds.position.x, bounds.position.y + bounds.size.y, 0);
-			downRowBounds.size = new Vector3Int(bounds.size.x, -bounds.size.y, 1);
-
 			return tiles;
 		}
-
-		void SetTiles(Vector3Int playerTilePos)
+		//--------------------------------------------------
+		// 再配置されるタイルの範囲を取得
+		BoundsInt GetReplacedTilesBounds(Vector3Int nextEnterTilePos)
 		{
-			List<TileBase> replacedTiles = new List<TileBase>();
+			var pos = new Vector3Int(tilemap.cellBounds.x, nextEnterTilePos.y, 0);
+			var size = new Vector3Int(tilemapSize.x, -(pos.y - tilemap.cellBounds.y), 1);
 
-			// タイル取得
-			var enteredTiles = GetEnteredTiles(playerTilePos);
-			var afterEnteredRowTiles = GetEnteredDownRowTiles(playerTilePos);
+			pos.y -= (size.y + 1);
 
-			replacedTiles.AddRange(enteredTiles);
-			replacedTiles.AddRange(afterEnteredRowTiles);
+			return new BoundsInt(pos, size);
+		}
 
-			// タイルを設置	
-			tilemap.SetTilesBlock(downRowBounds, replacedTiles.ToArray());
+		// 再配置されるタイルを設置
+		void SetReplacedTiles(Vector3Int nextEnterTilePos, TileBase[] replacedTiles)
+		{
+			var replacedTileBounds = GetReplacedTilesBounds(nextEnterTilePos);
 
-			// タイルを削除
+			tilemap.SetTilesBlock(replacedTileBounds, replacedTiles);
+		}
 
+		//--------------------------------------------------
+		// 改行タイル設置
+		void SetEnterTile(BoundsInt enteredTilesBounds, Vector3Int nextEnterTilePos, bool isEnterOfEnter)
+		{
+			// 改行範囲のタイル削除
+			var emptyTiles = new TileBase[enteredTilesBounds.size.x * enteredTilesBounds.size.y];
+
+			if (isEnterOfEnter) {
+				var boundsPos = new Vector3Int(tilemap.cellBounds.x, enteredTilesBounds.position.y);
+				var boundsSize = new Vector3Int(tilemap.size.x, 1, 1);
+				var bounds = new BoundsInt(boundsPos, boundsSize);
+
+				emptyTiles = new TileBase[bounds.size.x * bounds.size.y];
+				tilemap.SetTilesBlock(bounds, emptyTiles);
+			}
+
+			else {
+				tilemap.SetTilesBlock(enteredTilesBounds, emptyTiles);
+			}
+
+
+			// エンタータイル設置
+			tilemap.SetTile(nextEnterTilePos, enterTile);
 		}
 	}
 }
