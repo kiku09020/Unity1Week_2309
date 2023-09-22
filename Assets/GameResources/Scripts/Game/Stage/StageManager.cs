@@ -74,7 +74,7 @@ namespace Game.Stage
 
 			var enteredTilesBounds = GetEnteredTilesBound(playerTilePos, prevEnterTilePos, isEnterOfEnter);
 
-			
+
 			if (!isEnterOfEnter) {
 				var enteredTiles = tilemap.GetTilesBlock(enteredTilesBounds);
 				replacedTiles.AddRange(enteredTiles);
@@ -133,7 +133,19 @@ namespace Game.Stage
 
 			else {
 				startTilePos = playerTilePos + Vector3Int.right;                                    // 改行開始タイル
-				endTilePos = new Vector3Int(tilemapSize.x / 2, playerTilePos.y, playerTilePos.z);   // 改行終了タイル
+				endTilePos = new Vector3Int(tilemap.cellBounds.max.x, playerTilePos.y, playerTilePos.z);   // 改行終了タイル
+
+				// プレイヤーの右側からステージの右端までに改行タイルがあれば、
+				// 終了位置をそのタイルとする
+				for (int x = playerTilePos.x; x < tilemap.cellBounds.max.x; x++) {
+					var pos = new Vector3Int(x, playerTilePos.y, playerTilePos.z);
+					var tile = tilemap.GetTile(pos);
+
+					if (tile == enterTile) {
+						endTilePos = pos + Vector3Int.right;
+						break;
+					}
+				}
 			}
 
 			var boundsSize = new Vector3Int(endTilePos.x - startTilePos.x, 1, 1);

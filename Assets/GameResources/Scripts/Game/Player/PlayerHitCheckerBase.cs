@@ -18,12 +18,12 @@ namespace Game.Player
 
 		protected override void Initialize()
 		{
-			
+
 		}
 
 		private void OnTriggerEnter2D(Collider2D collision)
 		{
-			if (hitLayerMask.Contains(collision.gameObject.layer)) {
+			if (hitLayerMask.Contains(collision.gameObject.layer) && !IsHit) {
 				IsHit = true;
 				OnHitEvent?.Invoke(collision);
 			}
@@ -31,7 +31,7 @@ namespace Game.Player
 
 		private void OnTriggerExit2D(Collider2D collision)
 		{
-			if (hitLayerMask.Contains(collision.gameObject.layer)) {
+			if (hitLayerMask.Contains(collision.gameObject.layer) && IsHit) {
 				IsHit = false;
 				OnHitExitEvent?.Invoke(collision);
 			}

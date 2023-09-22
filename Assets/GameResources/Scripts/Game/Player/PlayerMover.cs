@@ -7,7 +7,6 @@ namespace Game.Player
 	public class PlayerMover : PlayerComponentBase
 	{
 		[SerializeField] PlayerHitCheckerBase wallHitChecker;
-		[SerializeField] PlayerHitCheckerBase groundHitChecker;
 
 		float moveSideDir = 1;		// is•ûŒü
 
