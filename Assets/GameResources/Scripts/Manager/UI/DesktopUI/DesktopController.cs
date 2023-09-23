@@ -63,4 +63,14 @@ public class DesktopController : MonoBehaviour
 	{
 		audioPanel.SetActive(!audioPanel.activeSelf);
 	}
+
+	public void TwitterButton()
+	{
+		Application.OpenURL("https://twitter.com/gamekk09020");
+	}
+
+	public void GitHubButton()
+	{
+		Application.OpenURL("https://github.com/kiku09020/Unity1Week_2309/blob/main/README.md");
+	}
 }

@@ -20,19 +20,9 @@ namespace GameController.UI
             SceneManager.LoadScene("DesktopScene");
 		}
 
-        public void StageTextFileButton(string sceneName)
-        {
-            SceneManager.LoadScene(sceneName);
-        }
-
         public void NextButton()
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-        }
-
-        public void TwitterButton()
-        {
-            Application.OpenURL("https://twitter.com/gamekk09020");
         }
     }
 }
