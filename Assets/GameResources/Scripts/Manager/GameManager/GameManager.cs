@@ -5,6 +5,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -38,6 +39,8 @@ public class GameManager : MonoBehaviour
 		seManager.PlayAudio("tada");
 
 		Instantiate(particlePrefab, Vector3.up * 5, Quaternion.identity);
+
+		PlayerPrefs.SetInt("StageClearCount", SceneManager.GetActiveScene().buildIndex);
 	}
 
 	void OnGameOvered()

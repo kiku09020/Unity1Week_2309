@@ -147,6 +147,7 @@ GameObject:
   - component: {fileID: 2313808181923287001}
   - component: {fileID: 921998355693721624}
   - component: {fileID: 2381936844202961771}
+  - component: {fileID: 919659633971167975}
   m_Layer: 5
   m_Name: StageFileIcon
   m_TagString: Untagged
@@ -257,10 +258,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: GameController.UI.Buttons, Assembly-CSharp
-        m_MethodName: StageTextFileButton
-        m_Mode: 5
+      - m_Target: {fileID: 919659633971167975}
+        m_TargetAssemblyTypeName: Game.StageSelect.StageFile, Assembly-CSharp
+        m_MethodName: LoadStageScene
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -269,3 +270,17 @@ MonoBehaviour:
           m_StringArgument: Stage1
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &919659633971167975
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7253524276341226718}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3de1368833d6fe408973710f335693d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fileButton: {fileID: 2381936844202961771}
+  fileNameText: {fileID: 4317750609109656406}

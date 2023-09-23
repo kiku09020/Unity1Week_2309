@@ -29,5 +29,10 @@ namespace GameController.UI
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
+
+        public void TwitterButton()
+        {
+            Application.OpenURL("https://twitter.com/gamekk09020");
+        }
     }
 }
