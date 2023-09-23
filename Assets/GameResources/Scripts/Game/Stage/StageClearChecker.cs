@@ -55,8 +55,6 @@ namespace Game.Stage
 						}
 
 						if (isContains) {
-							print("clear");
-
 							OnClearEvent?.Invoke();
 						}
 

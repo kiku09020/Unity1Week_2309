@@ -99,7 +99,7 @@ namespace Game.Stage
 
 			// プレイヤーの左タイルから、左端まで探索
 			// 改行タイルがあれば、タイル位置を返す
-			for (int x = playerTilePos.x - 1; x >= -tilemapSize.x / 2; x--) {
+			for (int x = playerTilePos.x; x >= -tilemapSize.x / 2; x--) {
 				pos = new Vector3Int(x, playerTilePos.y, playerTilePos.z);
 				var tile = tilemap.GetTile(pos);
 
@@ -132,7 +132,7 @@ namespace Game.Stage
 			}
 
 			else {
-				startTilePos = playerTilePos + Vector3Int.right;                                    // 改行開始タイル
+				startTilePos = playerTilePos;                                    // 改行開始タイル
 				endTilePos = new Vector3Int(tilemap.cellBounds.max.x, playerTilePos.y, playerTilePos.z);   // 改行終了タイル
 
 				// プレイヤーの右側からステージの右端までに改行タイルがあれば、

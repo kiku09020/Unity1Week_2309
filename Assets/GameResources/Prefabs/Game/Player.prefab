@@ -203,7 +203,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5432380164525981530}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -2.5, y: 4.36, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -351,7 +351,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5432380164878559111}
   - component: {fileID: 5432380164878559109}
-  - component: {fileID: 5432380164878559108}
+  - component: {fileID: 2471483485708409909}
   m_Layer: 3
   m_Name: WallChecker
   m_TagString: Untagged
@@ -400,7 +400,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.5, y: 0.5}
   m_EdgeRadius: 0
---- !u!114 &5432380164878559108
+--- !u!114 &2471483485708409909
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -409,7 +409,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5432380164878559110}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 52d2f05fdec50d4449f3cda41287c0f8, type: 3}
+  m_Script: {fileID: 11500000, guid: 90ea7b96272f7f546a15ecacd4f6c86d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   hitLayerMask:
@@ -884,5 +884,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 835ac3e4bb8777444aa334d3e3f7b0c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wallHitChecker: {fileID: 5432380164878559108}
-  groundHitChecker: {fileID: 5432380165234238871}
+  wallHitChecker: {fileID: 2471483485708409909}

@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour
 
 	[SerializeField] StageClearChecker clearChecker;
 
+	[SerializeField] ParticleSystem particlePrefab;
+
 	public static bool IsGameOver { get; private set; }
 	public static bool IsClear { get; private set; }
 
@@ -34,6 +36,8 @@ public class GameManager : MonoBehaviour
 		IsClear = true;
 
 		seManager.PlayAudio("tada");
+
+		Instantiate(particlePrefab, Vector3.up * 5, Quaternion.identity);
 	}
 
 	void OnGameOvered()
