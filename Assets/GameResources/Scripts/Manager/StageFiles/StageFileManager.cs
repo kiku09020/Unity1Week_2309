@@ -17,7 +17,7 @@ namespace Game.StageSelect
 
 		//--------------------------------------------------
 
-		void Awake()
+		public void SetStageFiles()
 		{
 			StageFile[] stageFiles = new StageFile[stageCount];
 
@@ -32,7 +32,18 @@ namespace Game.StageSelect
 			stageClearCount = PlayerPrefs.GetInt("StageClearCount", 0);
 
 			for (int i = 0; i < stageClearCount + 1; i++) {
-				stageFiles[i].SetButtonInteractable(true);
+				if (i < stageCount) {
+					stageFiles[i]?.SetButtonInteractable(true);
+				}
+			}
+		}
+
+		private void Update()
+		{
+			// クリア数リセット
+			if (Input.GetKeyDown(KeyCode.Delete) && Debug.isDebugBuild) {
+				PlayerPrefs.DeleteKey("StageClearCount");
+				print("Deleted StageClearCount.");
 			}
 		}
 	}

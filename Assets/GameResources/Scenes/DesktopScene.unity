@@ -649,7 +649,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92ac3e5974d55254d9fa5e70bd21c1e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stageCount: 3
+  stageCount: 6
   parent: {fileID: 303145042}
   stageFilePrefab: {fileID: 919659633971167975, guid: c80fccf722edad84b8b1b93c414f5651, type: 3}
 --- !u!1 &307582295
@@ -2770,6 +2770,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 303145044}
+        m_TargetAssemblyTypeName: Game.StageSelect.StageFileManager, Assembly-CSharp
+        m_MethodName: SetStageFiles
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
