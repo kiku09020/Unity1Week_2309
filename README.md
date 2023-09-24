@@ -13,8 +13,7 @@
 https://unityroom.com/games/enturkey
 
 ### itchio
-unreleased
-
+https://kk09020.itch.io/enturkey
 
 
 # ■About
